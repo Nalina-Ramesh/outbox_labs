@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+coverage/
+npm-debug.log*
+
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example

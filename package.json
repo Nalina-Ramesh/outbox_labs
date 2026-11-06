@@ -1,0 +1,25 @@
+{
+  "name": "reachinbox-scheduler-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "workspaces": [
+    "apps/backend",
+    "apps/frontend"
+  ],
+  "scripts": {
+    "db:migrate": "yarn workspace backend prisma migrate dev",
+    "db:studio": "yarn workspace backend prisma studio",
+    "dev:backend": "yarn workspace backend dev",
+    "dev:worker": "yarn workspace backend dev:worker",
+    "dev:frontend": "yarn workspace frontend dev",
+    "build:all": "yarn workspaces run build",
+    "infra:up": "docker-compose up -d",
+    "infra:down": "docker-compose down"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.3"
+  }
+}

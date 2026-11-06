@@ -1,0 +1,82 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String?
+  name          String?
+  avatarUrl     String?
+  createdAt     DateTime       @default(now())
+  slackAuth     SlackAuth?
+  emailAccounts EmailAccount[]
+  campaigns     Campaign[]
+}
+
+model SlackAuth {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String
+  webhookUrl   String?
+  channelName  String?
+  updatedAt    DateTime @updatedAt
+}
+
+model EmailAccount {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  email     String   @unique
+  smtpHost  String
+  smtpPort  Int
+  smtpUser  String
+  smtpPass  String
+  createdAt DateTime @default(now())
+  emails    Email[]
+}
+
+model Campaign {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  name         String
+  subject      String
+  body         String
+  delaySeconds Int      @default(2)
+  hourlyLimit  Int      @default(100)
+  scheduledAt  DateTime
+  createdAt    DateTime @default(now())
+  emails       Email[]
+}
+
+enum EmailStatus {
+  SCHEDULED
+  PENDING_RETRY
+  SENT
+  FAILED
+}
+
+model Email {
+  id             String       @id @default(uuid())
+  campaignId     String
+  campaign       Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  emailAccountId String
+  emailAccount   EmailAccount @relation(fields: [emailAccountId], references: [id])
+  recipient      String
+  status         EmailStatus  @default(SCHEDULED)
+  bullJobId      String?      @unique
+  scheduledFor   DateTime
+  sentAt         DateTime?
+  errorMessage   String?
+  createdAt      DateTime     @default(now())
+
+  @@index([status, scheduledFor])
+  @@index([emailAccountId, scheduledFor])
+}
