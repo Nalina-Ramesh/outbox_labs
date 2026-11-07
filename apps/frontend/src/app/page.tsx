@@ -29,9 +29,16 @@ export default function Home() {
           ...(mode === 'signup' ? { name } : {}),
         }),
       });
-      const result = await response.json();
+      if (!response.headers.get('content-type')?.includes('application/json')) {
+        throw new Error(
+          `The API at ${apiBaseUrl} returned a non-JSON response (HTTP ${response.status}). ` +
+          'Check that NEXT_PUBLIC_API_URL points to your deployed backend, not your Vercel frontend, and that the backend is running.',
+        );
+      }
+
+      const result = await response.json() as { error?: unknown };
       if (!response.ok) {
-        throw new Error(typeof result.error === 'string' ? result.error : 'Authentication failed. Please try again.');
+        throw new Error(typeof result.error === 'string' ? result.error : `Authentication failed (HTTP ${response.status}). Please try again.`);
       }
 
       router.replace('/dashboard');

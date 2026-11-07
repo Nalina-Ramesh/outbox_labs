@@ -161,6 +161,7 @@ Vercel should host the Next.js frontend only. The Express API and BullMQ worker 
 5. If Slack alerts are used, set `SLACK_REDIRECT_URI` to the public API URL followed by `/api/slack/callback` and configure the same URL in the Slack app.
 
 The Vercel deployment does not run the API, queue, or email worker. The queue monitor link in the dashboard points to the configured API host.
+To verify that the API is deployed and that `NEXT_PUBLIC_API_URL` is correct, open `<your-api-url>/api/health`; a working API returns `{"status":"ok"}`. If it returns an HTML page or a 404, the URL is not reaching this backend.
 
 ## Test email with Ethereal
 
@@ -258,5 +259,4 @@ docker-compose.yml
 - **Ethereal messages do not arrive in a real inbox:** that is expected; Ethereal captures messages for preview and does not deliver them.
 - **Messages stay scheduled:** confirm the worker is running and Redis is healthy. Check the API/worker terminal for errors.
 - **Next.js reports a file lock under OneDrive:** stop duplicate dev servers. If it continues, move the project to a folder not synchronized by OneDrive.
-
 

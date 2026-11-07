@@ -20,6 +20,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Expose Live BullMQ UI Monitor Dashboard
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/queues');
