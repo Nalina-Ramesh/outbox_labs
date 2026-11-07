@@ -150,6 +150,18 @@ npm run dev:frontend
 
 Open [http://localhost:3000](http://localhost:3000), create an account, then use **Compose** to connect your sender and schedule a campaign. The API runs at `http://localhost:4000`.
 
+## Deploy the frontend to Vercel
+
+Vercel should host the Next.js frontend only. The Express API and BullMQ worker are long-running services and need a separate Node.js host; PostgreSQL, Redis, and Elasticsearch must also be reachable by that host.
+
+1. Import this repository into Vercel and set **Root Directory** to `apps/frontend`. Leave the framework preset as **Next.js** and use the default build settings.
+2. Set `NEXT_PUBLIC_API_URL` in the Vercel project to the public HTTPS URL of the deployed API (without a trailing slash). It is embedded in the frontend bundle, so it is public and must not contain secrets. Configure it for each Vercel environment you use.
+3. Configure the backend with `FRONTEND_ORIGIN` set to the exact deployed frontend origin (for example, `https://your-project.vercel.app`), plus production PostgreSQL, Redis, Elasticsearch, and a stable `JWT_SECRET`. Run the Prisma migrations against the production database, then start both the API and the separate worker process.
+4. Set `NODE_ENV=production` on the backend. Production session cookies require HTTPS and use `SameSite=None` so credentialed frontend-to-API requests can send them. The backend CORS origin must exactly match `FRONTEND_ORIGIN`. Browser privacy settings may block cross-site cookies; using frontend and API custom domains on the same site is recommended.
+5. If Slack alerts are used, set `SLACK_REDIRECT_URI` to the public API URL followed by `/api/slack/callback` and configure the same URL in the Slack app.
+
+The Vercel deployment does not run the API, queue, or email worker. The queue monitor link in the dashboard points to the configured API host.
+
 ## Test email with Ethereal
 
 Ethereal is a fake SMTP service for development: messages are captured in a preview inbox and are **not delivered to real recipients**.

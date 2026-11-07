@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { apiBaseUrl } from '@/lib/config';
 
 interface SidebarProps {
   activeTab: 'scheduled' | 'sent';
@@ -70,7 +71,7 @@ export default function Sidebar({ activeTab, setActiveTab, onComposeClick, sched
 
       <div className="mt-auto border-t border-slate-100 p-3 max-sm:hidden">
         <a
-          href="http://localhost:4000/admin/queues"
+          href={`${apiBaseUrl}/admin/queues`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center gap-2 rounded-lg px-2 py-2 text-[11px] text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"

@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { apiBaseUrl } from '@/lib/config';
 
 interface ComposeModalProps {
   onClose: () => void;

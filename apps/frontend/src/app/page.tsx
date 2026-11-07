@@ -2,8 +2,7 @@
 
 import React, { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { apiBaseUrl } from '@/lib/config';
 
 export default function Home() {
   const router = useRouter();

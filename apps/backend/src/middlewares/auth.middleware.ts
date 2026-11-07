@@ -36,7 +36,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
       res.clearCookie(sessionCookieName, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
       });
       res.status(401).json({ error: 'Your session is invalid. Please sign in again.' });
@@ -48,7 +48,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     res.clearCookie(sessionCookieName, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
     });
     res.status(401).json({ error: 'Your session has expired. Please sign in again.' });

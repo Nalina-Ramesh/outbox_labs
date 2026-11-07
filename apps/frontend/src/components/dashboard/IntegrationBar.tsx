@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { apiBaseUrl } from '@/lib/config';
 
 export default function IntegrationBar() {
   const [connected, setConnected] = useState(false);

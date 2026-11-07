@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Header from '@/components/dashboard/Header';
 import Sidebar from '@/components/dashboard/Sidebar';
 import ComposeModal from '@/components/ComposeModal';
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { apiBaseUrl } from '@/lib/config';
 
 interface SessionUser {
   id: string;
