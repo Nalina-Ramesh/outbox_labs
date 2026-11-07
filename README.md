@@ -259,4 +259,4 @@ docker-compose.yml
 - **Messages stay scheduled:** confirm the worker is running and Redis is healthy. Check the API/worker terminal for errors.
 - **Next.js reports a file lock under OneDrive:** stop duplicate dev servers. If it continues, move the project to a folder not synchronized by OneDrive.
 
-Only send to recipients who have given permission, and respect your email provider's sending limits and applicable anti-spam laws. Do not commit `.env` files or share database, JWT, Slack, or SMTP credentials.
+
